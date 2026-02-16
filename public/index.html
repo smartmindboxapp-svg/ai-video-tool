@@ -72,11 +72,55 @@ h3{
 
 </div>
 
-<script>
-document.getElementById("form").onsubmit = async e=>{
-  e.preventDefault();
+  <script>
+async function generateAudio(){
+  const text = document.getElementById("text").value;
 
-  const fd = new FormData(e.target);
+  const res = await fetch("/audio",{
+    method:"POST",
+    headers:{ "Content-Type":"application/json" },
+    body: JSON.stringify({ text })
+  });
+
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+
+  document.getElementById("player").src = url;
+
+  const dl = document.getElementById("downloadAudio");
+  dl.href = url;
+  dl.download="voice.mp3";
+  dl.style.display="block";
+}
+
+async function previewVideo(){
+  const text = document.getElementById("text").value;
+  const video = document.getElementById("video").files[0];
+
+  const fd = new FormData();
+  fd.append("text", text);
+  fd.append("video", video);
+
+  const res = await fetch("/preview",{
+    method:"POST",
+    body:fd
+  });
+
+  const blob = await res.blob();
+  const url = URL.createObjectURL(blob);
+
+  const vid = document.getElementById("videoPlayer");
+  vid.src = url;
+  vid.style.display="block";
+}
+
+async function exportVideo(){
+  const text = document.getElementById("text").value;
+  const video = document.getElementById("video").files[0];
+
+  const fd = new FormData();
+  fd.append("text", text);
+  fd.append("video", video);
 
   const res = await fetch("/generate",{
     method:"POST",
@@ -87,17 +131,12 @@ document.getElementById("form").onsubmit = async e=>{
   const url = URL.createObjectURL(blob);
 
   const a=document.createElement("a");
-
-  if(blob.type.includes("audio")){
-    a.download="voice.mp3";
-  }else{
-    a.download="video.mp4";
-  }
-
   a.href=url;
+  a.download="video.mp4";
   a.click();
-};
+}
 </script>
+
 
 </body>
 </html>
