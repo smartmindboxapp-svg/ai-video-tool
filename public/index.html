@@ -57,14 +57,18 @@ h3{
 </div>
 
 <div class="section">
-<h3>2️⃣ Video (optional)</h3>
-<input type="file" name="video" accept="video/*">
+<div class="section">
+<h3>Video with Subtitles</h3>
+
+<input type="file" id="video" accept="video/*"><br><br>
+
+<button onclick="previewVideo()">Preview with Subtitles</button>
+<button onclick="exportVideo()">Export Video</button>
+
+<video id="videoPlayer" controls style="width:100%;margin-top:10px;display:none"></video>
+
 </div>
 
-<div class="section">
-<h3>3️⃣ Image Overlay (optional)</h3>
-<input type="file" name="image" accept="image/*">
-</div>
 
 <button>Generate Video</button>
 
