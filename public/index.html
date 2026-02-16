@@ -2,46 +2,75 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>AI Video Tool</title>
+<title>AI Video Studio</title>
 
 <style>
 body{
-  font-family: Arial;
+  font-family:Arial;
   background:#0f172a;
   color:white;
   padding:20px;
 }
+.container{
+  max-width:900px;
+  margin:auto;
+}
 textarea{
   width:100%;
   height:180px;
+  margin-top:10px;
+}
+input{
+  margin-top:10px;
 }
 button{
-  margin-top:10px;
-  padding:12px;
+  margin-top:15px;
+  padding:14px;
   width:100%;
   background:#2563eb;
   color:white;
   border:none;
+  font-size:16px;
 }
-input{
-  margin-top:10px;
+.section{
+  margin-top:25px;
+  padding:15px;
+  border:1px solid #334155;
+  border-radius:8px;
+}
+h3{
+  margin:0 0 10px 0;
 }
 </style>
 </head>
 
 <body>
+<div class="container">
 
-<h2>AI Voice Video Tool</h2>
+<h2>AI Video Studio</h2>
 
 <form id="form">
+
+<div class="section">
+<h3>1️⃣ Text</h3>
 <textarea name="text" placeholder="Paste script"></textarea>
+</div>
 
-<br>
+<div class="section">
+<h3>2️⃣ Video (optional)</h3>
 <input type="file" name="video" accept="video/*">
+</div>
 
-<br>
+<div class="section">
+<h3>3️⃣ Image Overlay (optional)</h3>
+<input type="file" name="image" accept="image/*">
+</div>
+
 <button>Generate Video</button>
+
 </form>
+
+</div>
 
 <script>
 document.getElementById("form").onsubmit = async e=>{
@@ -57,9 +86,15 @@ document.getElementById("form").onsubmit = async e=>{
   const blob = await res.blob();
   const url = URL.createObjectURL(blob);
 
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "video.mp4";
+  const a=document.createElement("a");
+
+  if(blob.type.includes("audio")){
+    a.download="voice.mp3";
+  }else{
+    a.download="video.mp4";
+  }
+
+  a.href=url;
   a.click();
 };
 </script>
